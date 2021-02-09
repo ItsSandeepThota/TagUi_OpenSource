@@ -1,0 +1,149 @@
+http://172.17.10.53:4200/login
+wait C:\\apps\\Images\\StartUpScreen.png
+if present('C:\\apps\\Images\\MaximizeButton.png')
+{
+click C:\\apps\\Images\\MaximizeButton.png
+}
+if present('body > app-root > div > app-login > div > div > div > div.col-sm-4.right-section > div:nth-child(2) > form')
+{
+click //*[@id="email"]
+type //*[@id="email"] as schintalapudi
+click //*[@id="password"]
+type //*[@id="password"] as susanth123
+click /html/body/app-root/div/app-login/div/div/div/div[2]/div[2]/form/button
+read /html/body/app-root/div/app-dashboard/main/div/div/div/div/div/div/div/div[1]/table/tbody/tr/th[3]/button/b to title
+echo title
+iteration = `column_name`
+row_Data1=['Value','Filename','Status','Doc status']
+write csv_row(row_Data1) to example_file.csv
+for num from 1 to title
+{
+click //*[@id="'+num+'"]/i
+read //*[@id="'+num+'"] to filename
+echo filename
+wait C:\\apps\\Images\\Run1.PNG
+type ('r',Key.WIN)
+vision type(Key.BACKSPACE)
+enter C:\\apps\\Images\\Run1.PNG as C:\\apps\\Codes\\`filename`
+vision type(Key.ENTER)
+wait 2
+wait C:\\apps\\Images\\File.PNG
+wait 1
+varstring1 = []
+if filename contains '.docx'
+{
+if present('C:\\apps\\Images\\CompatibilityView.PNG')
+{
+click C:\\apps\\Images\\File.PNG
+vision type(Key.ALT)
+vision type('i')
+vision type('k')
+wait 5
+}
+else
+{
+echo '`[iteration]`'
+}
+}
+if filename contains '.xlsx'
+{
+varstring1= filename.split(".xlsx")
+var1= varstring1[0]
+var2 = varstring1[1]
+echo var1
+}
+if filename contains '.pptx'
+{
+varstring1= filename.split(".pptx")
+var1= varstring1[0]
+var2 = varstring1[1]
+echo var1
+}
+if filename contains '.docx'
+{
+varstring1= filename.split(".docx")
+var1= varstring1[0]
+var2 = varstring1[1]
+echo var1
+}
+vision type(Key.ALT)
+vision type('f')
+wait C:\\apps\\Images\\BackBox.PNG
+vision type ('e')
+vision type ('a')
+wait C:\\apps\\Images\\FileName.PNG
+type C:\\apps\\Images\\FileName.PNG as [BACKSPACE]
+type C:\\apps\\Images\\FileName.PNG as D:\\PDFFiles\\`var1`.pdf
+vision type('s',Key.ALT)
+wait 8
+vision type(Key.F4, Key.ALT)
+if present('C:\\apps\\Images\\ErrorWord.PNG')
+{
+vision type(Key.ENTER)
+wait 5
+}
+else
+{
+echo '`[iteration]`'
+}
+click /html/body/app-root/div/app-dashboard/main/div[1]/div/div/div/div/div/div/div[2]/table/tbody/tr[`num`]/td[5]/label/i
+wait C:\\apps\\Images\\FileName.PNG
+type C:\\apps\Images\\FileName.PNG as [BACKSPACE]
+type C:\\apps\\Images\\FileName.PNG as D:\\PDFFiles\\`var1`.pdf
+wait 5
+vision type('o',Key.ALT)
+value = '`num`'
+status = 'Processed'
+row_data = [value,filename,status]
+write csv_row(row_data) to example_file.csv
+}
+click /html/body/app-root/div/app-dashboard/main/div/div/div/div/div/div/div/button
+wait C:\\apps\\Images\\submited.PNG
+click //*[@id="exampleModalCenter"]/div/div/div[1]/div/div/label
+wait C:\\apps\\Images\\FileName.PNG
+type C:\\apps\\Images\\FileName.PNG as [BACKSPACE]
+type C:\\apps\\Images\\FileName.PNG as C:\\apps\\Codes\\example_file.csv
+vision type('o',Key.ALT)
+wait 3
+click //*[@id="exampleModalCenter"]/div/div/div[2]/button[2]
+wait 2
+click C:\\apps\\Images\\ClosePortal.png
+vision type ('r',Key.WIN)
+vision type(Key.BACKSPACE)
+enter C:\\apps\\Images\\Run1.PNG as D:\\PDFFiles
+vision type(Key.ENTER)
+wait 2
+vision type('a',Key.CTRL)
+vision type(Key.DELETE)
+click C:\\apps\\Images\\closeFileExplorer.PNG
+}
+else
+{
+vision type(Key.F4, Key.ALT)
+row_Data2=['Status']
+row_data3 = ['Error occured while automating']
+write csv_row(row_Data2) to example_file.csv
+write csv_row(row_data3) to example_file.csv
+vision type ('r',Key.WIN)
+vision type(Key.BACKSPACE)
+enter C:\\apps\\Images\\Run1.PNG as outlook.exe
+vision type(Key.ENTER)
+wait C:\\apps\\Images\\File.PNG
+click C:\\apps\\Images\\MailButton.PNG
+wait C:\\apps\\Images\\AttachFileButton.PNG
+vision type('sthota2@miraclesoft.com')
+vision type(Key.RIGHT)
+vision type(Key.TAB)
+vision type(Key.RIGHT)
+vision type(Key.TAB)
+vision type('Bot Status Log File')
+vision type(Key.TAB)
+click C:\\apps\\Images\\AttachFileButton.PNG
+type C:\\apps\\Images\\FileName.PNG as [BACKSPACE]
+type C:\\apps\\Images\\FileName.PNG as C:\\apps\\Codes\\example_file.csv
+vision type(Key.ENTER)
+vision type(Key.TAB)
+vision type('Above attached is the running status of the bot')
+click C:\\apps\\Images\\SendMail.PNG
+click C:\\apps\\Images\\CloseMail.PNG
+}
